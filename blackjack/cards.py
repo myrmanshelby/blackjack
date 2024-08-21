@@ -53,26 +53,3 @@ class Hand:
     def reset_hand(self):
         self.cards=[]
         self.score=0
-
-class Player:
-    def __init__(self):
-        self.hand=Hand()
-        self.chip_total=2500
-
-    
-
-# testing deck
-d = Deck()
-d.shuffle()
-
-shelby = Player()
-shelby.hand.add_card(d.deal_one())
-shelby.hand.add_card(d.deal_one())
-print(shelby.hand.cards)
-print(shelby.hand.score)
-
-shelby.hand.reset_hand()
-shelby.hand.add_card(d.deal_one())
-shelby.hand.add_card(d.deal_one())
-print(shelby.hand.cards)
-print(shelby.hand.score)
