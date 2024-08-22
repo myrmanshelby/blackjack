@@ -38,8 +38,9 @@ class Round:
 
         if self.check_naturals():
             return
-        
-        self.players_turn()
+        if not self.double_down():
+            self.players_turn()
+
         if self.player.hand.score>21:
             self.determine_winner()
         else:
@@ -62,6 +63,16 @@ class Round:
         else:
             return False
         
+    def double_down(self):
+        if self.player.hand.score in {9, 10, 11}:
+            move = input("Double down? Type y/n. ").lower()
+            if move=='y':
+                self.player.chip_total-=self.bet
+                self.bet=self.bet*2
+                print("New bet: ", self.bet)
+                self.player.hand.add_card(self.deck.deal_one())
+                print("Player's Cards: ", self.player.hand.cards)
+                return True
 
     def players_turn(self):
         move = input("Hit or stand? Type one. ").lower()
