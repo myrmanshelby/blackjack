@@ -104,7 +104,36 @@ class Round:
             self.player.chip_total+=self.bet*2
 
 
+def play_game(player):
+    dealer=Dealer()
 
+    while player.chip_total>0:
+        print("Current chips: ", player.chip_total)
+        try:
+            bet = int(input("Please enter your bet or type a non-number to finish: "))
+        except:
+            break
+
+        # Change this s.t. only the chips that the player has appers on screen
+        while bet > player.chip_total:
+            bet = input("Your bet is higher than your chip total. Enter a new bet or type a non-number to finish: ")
+            try:
+                bet=int(bet)
+            except:
+                break
+
+        if type(bet)==str:
+            break
+        
+        player.hand.reset_hand()
+        dealer.hand.reset_hand()
+        r = Round(player, dealer, bet)
+        r.play()
+
+    if player.chip_total>0:
+        print("Congrats! You cashed out with ", player.chip_total, " chips.")
+    else:
+        print("You lost it all! Better luck next time...")
 
     
 
@@ -114,12 +143,6 @@ class Round:
 # testing round
 
 shelby = Player()
-dealer = Dealer()
-
-print("Player Chips: ", shelby.chip_total)
-r = Round(shelby, dealer, 100)
-r.play()
-
-print("Player Chips: ", shelby.chip_total)
+play_game(shelby)
 
 
