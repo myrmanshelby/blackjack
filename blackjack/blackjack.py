@@ -34,8 +34,11 @@ class Round:
         print("Player's Cards: ", self.player.hand.cards)
         print("Dealer's Card: ", self.dealer.hand.cards[0])
         self.players_turn()
-        self.dealers_turn()
-        self.determine_winner(bet_value)
+        if self.player.hand.score>21:
+            self.determine_winner(bet_value)
+        else:
+            self.dealers_turn()
+            self.determine_winner(bet_value)
 
     def players_turn(self):
         move = input("Hit or stand? Type one. ").lower()
@@ -57,14 +60,14 @@ class Round:
         print("Player Score: ", self.player.hand.score)
         print("Dealer Score: ", self.dealer.hand.score)
 
-        if self.player.hand.score>self.dealer.hand.score:
-            print("You win!")
-            self.player.chip_total+=bet_value*2
-        elif self.dealer.hand.score>self.player.hand.score:
-            print("Dealer wins!")
-        else:
+        if (self.dealer.hand.score>self.player.hand.score and self.dealer.hand.score<=21) or self.player.hand.score>21:
+            print("Dealer wins")
+        elif self.player.hand.score==self.dealer.hand.score:
             print("It's a tie!")
             self.player.chip_total+=bet_value
+        else:
+            print("You win!")
+            self.player.chip_total+=bet_value*2
 
 
 
