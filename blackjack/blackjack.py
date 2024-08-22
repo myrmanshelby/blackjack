@@ -16,10 +16,11 @@ TO DO
 '''
 
 class Round:
-    def __init__(self, player, dealer):
+    def __init__(self, player, dealer, bet):
         self.deck = Deck()
         self.player = player
         self.dealer = dealer
+        self.bet = bet
 
     def deal(self):
         self.player.hand.add_card(self.deck.deal_one())
@@ -27,18 +28,40 @@ class Round:
         self.player.hand.add_card(self.deck.deal_one())
         self.dealer.hand.add_card(self.deck.deal_one())
 
-    def play(self, bet_value):
-        self.player.chip_total-=bet_value
+    def play(self):
+        self.player.chip_total-=self.bet
         self.deck.shuffle()
         self.deal()
+
         print("Player's Cards: ", self.player.hand.cards)
         print("Dealer's Card: ", self.dealer.hand.cards[0])
+
+        if self.check_naturals():
+            return
+        
         self.players_turn()
         if self.player.hand.score>21:
-            self.determine_winner(bet_value)
+            self.determine_winner()
         else:
             self.dealers_turn()
-            self.determine_winner(bet_value)
+            self.determine_winner()
+
+    def check_naturals(self):
+        if self.player.hand.score==21 and self.dealer.hand.score==21:
+            print("It's a tie!")
+            self.player.chip_total+=self.bet
+            return True
+        elif self.player.hand.score==21:
+            print("You're a natural!")
+            self.player.chip_total+=int(self.bet*2.5)
+            return True
+        elif self.dealer.hand.score==21:
+            print("Dealer's a natural!")
+            print(self.dealer.hand.cards)
+            return True
+        else:
+            return False
+        
 
     def players_turn(self):
         move = input("Hit or stand? Type one. ").lower()
@@ -56,7 +79,7 @@ class Round:
             self.dealer.hand.add_card(self.deck.deal_one())
             print("Dealer's Cards: ", self.dealer.hand.cards)
 
-    def determine_winner(self, bet_value):
+    def determine_winner(self):
         print("Player Score: ", self.player.hand.score)
         print("Dealer Score: ", self.dealer.hand.score)
 
@@ -64,10 +87,10 @@ class Round:
             print("Dealer wins")
         elif self.player.hand.score==self.dealer.hand.score:
             print("It's a tie!")
-            self.player.chip_total+=bet_value
+            self.player.chip_total+=self.bet
         else:
             print("You win!")
-            self.player.chip_total+=bet_value*2
+            self.player.chip_total+=self.bet*2
 
 
 
@@ -83,8 +106,8 @@ shelby = Player()
 dealer = Dealer()
 
 print("Player Chips: ", shelby.chip_total)
-r = Round(shelby, dealer)
-r.play(100)
+r = Round(shelby, dealer, 100)
+r.play()
 
 print("Player Chips: ", shelby.chip_total)
 
