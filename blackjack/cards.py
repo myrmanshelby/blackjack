@@ -17,7 +17,7 @@ class Deck:
         shuffle(self.cards)
 
     def deal_one(self):
-        if len(self.cards)>1:
+        if len(self.cards)>=1:
             return self.cards.pop()
         
 class Hand:

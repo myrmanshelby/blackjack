@@ -1,0 +1,35 @@
+body {
+    background-color: #168233;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+   color: gold;
+   text-align: center;
+   text-shadow: 8px 8px 8px maroon;
+   font-size: 70px;
+   font-weight: bolder;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+button {
+    background-color: maroon;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+    padding: 15px;
+    border-radius: 30px;
+    border: 2px solid gold;
+    box-shadow: 5px 5px 5px black;
+}
+
+button:hover {
+    cursor: pointer;
+    box-shadow: 1px 1px 1px black;
+}

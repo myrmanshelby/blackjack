@@ -104,9 +104,10 @@ class Round:
             self.player.chip_total+=self.bet*2
 
 
-def play_game(player):
+def play_game():
     dealer=Dealer()
-
+    player=Player()
+    
     while player.chip_total>0:
         print("Current chips: ", player.chip_total)
         try:
@@ -142,7 +143,7 @@ def play_game(player):
 
 # testing round
 
-shelby = Player()
-play_game(shelby)
+
+play_game()
 
 
