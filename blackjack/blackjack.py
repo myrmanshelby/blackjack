@@ -1,20 +1,6 @@
 from cards import *
 from players import *
 
-'''
-TO DO
-* Create round class
-    * initialize new deck
-    * takes in players
-    * takes in bet and subtracts from player
-    * resets player hands
-    * plays game using blackjack rules
-    * declares winner
-    * adjusts chips based on rules
-* Create game class
-    * continues gameplay until chips are gone? need to brainstorm more
-'''
-
 class Round:
     def __init__(self, player, dealer, bet):
         self.deck = Deck()
