@@ -42,21 +42,38 @@ startGame.addEventListener('click', () => {
 
 ten.addEventListener('click', () => {
     bet+=10
-    betTracker.textContent = "Current bet: "+String(bet)
+    betTracker.textContent = "Current Bet: "+String(bet)
+    subtractBet(10)
 })
 
 fifty.addEventListener('click', () => {
     bet+=50
-    betTracker.textContent = "Current bet: "+String(bet)
+    betTracker.textContent = "Current Bet: "+String(bet)
+    subtractBet(50)
+
 })
 
 hundred.addEventListener('click', () => {
     bet+=100
-    betTracker.textContent = "Current bet: "+String(bet)
+    betTracker.textContent = "Current Bet: "+String(bet)
+    subtractBet(100)
 })
 
 fiveH.addEventListener('click', () => {
     bet+=500
-    betTracker.textContent = "Current bet: "+String(bet)
+    betTracker.textContent = "Current Bet: "+String(bet)
+    subtractBet(500)
 })
 
+function subtractBet(betVal) {
+    fetch('/subtract_bet', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({value: betVal})
+    }).then(response=>response.json())
+    .then(data=> {
+        chipTotal.textContent=`Current Chip Total: ${data.chip_total}`
+    })
+}
