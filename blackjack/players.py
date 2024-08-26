@@ -1,4 +1,4 @@
-from cards import *
+from blackjack.cards import *
 
 class Player:
     def __init__(self):

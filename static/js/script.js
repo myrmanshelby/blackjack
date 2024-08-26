@@ -14,17 +14,49 @@ const controls = document.querySelector(".controls");
 
 const ctrlContainer = document.querySelector(".ctrl-container")
 const betTracker = document.createElement("div");
-betTracker.textContent = "Current bet: 0"
+betTracker.textContent = "Current bet: 0";
+const chipTotal = document.createElement("div");
+betTracker.classList.add("bet-tracker")
+chipTotal.classList.add("bet-tracker")
+
+let bet = 0;
 
 const startGame = document.getElementById("start-game")
 startGame.addEventListener('click', () => {
-    buttons.removeChild(startGame)
+    buttons.removeChild(startGame);
 
-    buttons.appendChild(ten)
-    buttons.appendChild(fifty)
-    buttons.appendChild(hundred)
-    buttons.appendChild(fiveH)
+    buttons.appendChild(ten);
+    buttons.appendChild(fifty);
+    buttons.appendChild(hundred);
+    buttons.appendChild(fiveH);
 
-    controls.appendChild(startRound)
-    ctrlContainer.appendChild(betTracker)
+    fetch('/chip_total')
+        .then(response => response.json())
+        .then(data => {
+            chipTotal.textContent=`Current Chip Total: ${data.chip_total}`
+        })
+    controls.appendChild(startRound);
+    controls.appendChild(chipTotal)
+    controls.appendChild(betTracker);
 })
+
+ten.addEventListener('click', () => {
+    bet+=10
+    betTracker.textContent = "Current bet: "+String(bet)
+})
+
+fifty.addEventListener('click', () => {
+    bet+=50
+    betTracker.textContent = "Current bet: "+String(bet)
+})
+
+hundred.addEventListener('click', () => {
+    bet+=100
+    betTracker.textContent = "Current bet: "+String(bet)
+})
+
+fiveH.addEventListener('click', () => {
+    bet+=500
+    betTracker.textContent = "Current bet: "+String(bet)
+})
+
