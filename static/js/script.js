@@ -40,29 +40,41 @@ startGame.addEventListener('click', () => {
     controls.appendChild(betTracker);
 })
 
-ten.addEventListener('click', () => {
-    bet+=10
-    betTracker.textContent = "Current Bet: "+String(bet)
-    subtractBet(10)
+ten.addEventListener('click', async () => {
+    const isValid = await checkValidBet(10)
+    if(isValid){
+        bet+=10
+        betTracker.textContent = "Current Bet: "+String(bet)
+        subtractBet(10)
+    }
 })
 
-fifty.addEventListener('click', () => {
-    bet+=50
-    betTracker.textContent = "Current Bet: "+String(bet)
-    subtractBet(50)
+fifty.addEventListener('click', async () => {
+    const isValid = await checkValidBet(50)
+    if(isValid){
+        bet+=50
+        betTracker.textContent = "Current Bet: "+String(bet)
+        subtractBet(50)
+    }
 
 })
 
-hundred.addEventListener('click', () => {
-    bet+=100
-    betTracker.textContent = "Current Bet: "+String(bet)
-    subtractBet(100)
+hundred.addEventListener('click', async () => {
+    const isValid = await checkValidBet(100)
+    if(isValid){
+        bet+=100
+        betTracker.textContent = "Current Bet: "+String(bet)
+        subtractBet(100)
+    }
 })
 
-fiveH.addEventListener('click', () => {
-    bet+=500
-    betTracker.textContent = "Current Bet: "+String(bet)
-    subtractBet(500)
+fiveH.addEventListener('click', async () => {
+    const isValid = await checkValidBet(500)
+    if(isValid){
+        bet+=500
+        betTracker.textContent = "Current Bet: "+String(bet)
+        subtractBet(500)
+    }
 })
 
 function subtractBet(betVal) {
@@ -76,4 +88,21 @@ function subtractBet(betVal) {
     .then(data=> {
         chipTotal.textContent=`Current Chip Total: ${data.chip_total}`
     })
+}
+
+async function checkValidBet(betVal) {
+    let currentChips;
+    try {
+        const response = await fetch('/chip_total');
+        const data = await response.json();
+        currentChips = data.chip_total
+    } catch {
+        console.error('Error fetching chip total: ', error);
+        return false
+    }
+    if(currentChips>=betVal) {
+        return true;
+    } else {
+        return false;
+    }
 }
