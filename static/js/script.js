@@ -106,3 +106,22 @@ async function checkValidBet(betVal) {
         return false;
     }
 }
+
+// TO DO: Once user hits start round, initial deal with hit or stand buttons
+
+const hit = document.createElement("button");
+hit.textContent = "Hit"
+const stay = document.createElement("button");
+stay.textContent = "Stay"
+
+startRound.addEventListener('click', () => {
+    buttons.removeChild(ten);
+    buttons.removeChild(fifty);
+    buttons.removeChild(hundred);
+    buttons.removeChild(fiveH);
+    
+    buttons.appendChild(hit)
+    buttons.appendChild(stay)
+
+    controls.removeChild(startRound)
+})

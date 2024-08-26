@@ -1,7 +1,7 @@
 body {
     background-color: #168233;
     font-family: Arial, Helvetica, sans-serif;
-    color: maroon
+    color: white;
 }
 
 h1 {
@@ -23,7 +23,7 @@ img {
     justify-content: space-around;
     align-items: flex-start;
     width: 80%;
-    margin: 0 auto;
+    margin: 3% auto;
 }
 
 .hand-container {
@@ -47,7 +47,7 @@ img {
 }
 
 .deck img {
-    margin: 0 20px;
+    margin: 50px 20px 0;
 }
 
 .cards img {
