@@ -1,6 +1,6 @@
 from random import shuffle
 
-RANKS = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
+RANKS = ['2','3','4','5','6','7','8','9','10','jack','queen','king','ace']
 SUITS = ['clubs','hearts','spades','diamonds']
 
 class Deck:
@@ -12,6 +12,7 @@ class Deck:
         for suit in SUITS:
             for rank in RANKS:
                 self.cards.append((rank, suit))
+        self.shuffle()
 
     def shuffle(self):
         shuffle(self.cards)
@@ -33,9 +34,9 @@ class Hand:
         ace_count=0
         self.score=0
         for card in self.cards:
-            if card[0] in {'J','Q','K'}:
+            if card[0] in {'jack','queen','king'}:
                 self.score+=10
-            elif card[0]=='A':
+            elif card[0]=='ace':
                 ace_count+=1
             else:
                 self.score+=int(card[0])

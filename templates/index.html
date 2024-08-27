@@ -27,6 +27,8 @@
         <button id="start-game">Start Game</button>
     </div>
 </div></div>
+<script>
+    const cardUrls = {{ card_urls | tojson | safe }};</script>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

@@ -107,7 +107,7 @@ async function checkValidBet(betVal) {
     }
 }
 
-// TO DO: Once user hits start round, initial deal with hit or stand buttons
+// TO DO: fetch initial deal once player hits start round
 
 const hit = document.createElement("button");
 hit.textContent = "Hit"
@@ -124,4 +124,27 @@ startRound.addEventListener('click', () => {
     buttons.appendChild(stay)
 
     controls.removeChild(startRound)
+    fetch('/first_deal')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            add_card_player(data.p_card_one)
+            add_card_player(data.p_card_two)
+            add_card_dealer(data.d_card_one)
+            add_card_dealer(data.d_card_two)
+        })
 })
+
+async function add_card_player(cardName) {
+    const playerHand = document.querySelector('.player-hand')
+    const img = document.createElement("img");
+    img.src = cardUrls[cardName];
+    playerHand.appendChild(img);
+}
+
+async function add_card_dealer(cardName) {
+    const dealerHand = document.querySelector('.dealer-hand')
+    const img = document.createElement("img");
+    img.src = cardUrls[cardName];
+    dealerHand.appendChild(img);
+}
