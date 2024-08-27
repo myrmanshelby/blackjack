@@ -10,6 +10,8 @@ def index():
     card_list = []
     for rank, suit in d.cards:
         card_list.append(rank+"_of_"+suit)
+    
+    card_list.append('card_back')
 
     card_urls = {card: url_for('static', filename=f'img/{card}.png') for card in card_list}
     return render_template("index.html", card_urls=card_urls)
@@ -36,7 +38,7 @@ def first_deal():
     p_card_one = cards[0][0]
     p_card_two = cards[0][1]
     d_card_one = cards[1][0]
-    d_card_two = cards[1][1]
+    d_card_two = 'card_back'
     return jsonify({"p_card_one": p_card_one, 
                     "p_card_two": p_card_two,
                     "d_card_one": d_card_one,
