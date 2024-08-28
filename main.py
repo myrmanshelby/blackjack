@@ -44,5 +44,25 @@ def first_deal():
                     "d_card_one": d_card_one,
                     "d_card_two": d_card_two})
 
+@app.route('/hit', methods=['GET'])
+def hit():
+    new_card = game.hit()
+    return jsonify({"new_card": new_card})
+
+@app.route('/player_score', methods=['GET'])
+def player_score():
+    player_score = game.get_player_score()
+    return jsonify({'player_score': player_score})
+
+@app.route('/dealer_score', methods=['GET'])
+def dealer_score():
+    dealer_score = game.get_dealer_score()
+    return jsonify({'dealer_score': dealer_score})
+
+@app.route('/check_natural', methods=['GET'])
+def check_natural():
+    natural = game.check_natural()
+    return jsonify({'natural': natural})
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8080, debug=True)
