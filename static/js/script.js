@@ -170,6 +170,19 @@ async function getScores(){
     }
 }
 
+async function getDealerScore(){
+    let dealerScore
+    try {
+        const dealerResponse = await fetch('/dealer_score');
+        const dealerData = await dealerResponse.json();
+        dealerScore = dealerData.dealer_score;
+
+        return dealerScore;
+    } catch (error) {
+        console.error('Error fetching scores:', error);
+    }
+}
+
 hit.addEventListener('click', async () => {
     fetch('/hit')
         .then(response => response.json())
@@ -179,32 +192,46 @@ hit.addEventListener('click', async () => {
 
     setTimeout(async () => {
         scores = await getScores()
-        console.log(scores)
-        console.log(scores)
         if (scores[0]>21){
-            showPopup('bust', scores[0], scores[1])
+            flipCardDealer();
+            await new Promise(resolve => setTimeout(resolve, 750));
+            showPopup('bust', scores[0], scores[1]);
         }
     }, 750)
-    /*
-    fetch('player_score')
-        .then(response => response.json())
-        .then(data => {
-            setTimeout(() => {
-                if(data.player_score>21) {
-                    fetch('dealer_score')
-                        .then(response => response.json())
-                        .then(data2 => {
-                            showPopup('bust', data.player_score, data2.dealer_score)
-                        })
-                }
-            }, 750)
-        })*/
 })
+
+stay.addEventListener('click', async () => {
+    flipCardDealer();
+    
+    let dealerScore=await getDealerScore()
+
+    await dealerPlay(dealerScore)
+})
+
+async function dealerPlay(dealerScore) {
+    if(dealerScore<=16){
+        await new Promise(resolve => setTimeout(resolve, 750));
+
+        try {
+            const response = await fetch('/hit_dealer');
+            const data = await response.json();
+            addCardDealer(data.new_card);
+        } catch (error) {
+            console.error('Error fetching new dealer card: ', error);
+        }
+
+        dealerScore = await getDealerScore();
+        console.log(dealerScore)
+
+        await dealerPlay(dealerScore);
+    }
+}
 
 async function addCardPlayer(cardName) {
     const playerHand = document.querySelector('.player-hand')
     const img = document.createElement("img");
     img.src = cardUrls[cardName];
+    img.classList.add('player-'+cardName);
     playerHand.appendChild(img);
 }
 
@@ -212,7 +239,25 @@ async function addCardDealer(cardName) {
     const dealerHand = document.querySelector('.dealer-hand')
     const img = document.createElement("img");
     img.src = cardUrls[cardName];
+    img.classList.add('dealer-'+cardName);
     dealerHand.appendChild(img);
+}
+
+async function flipCardDealer() {
+    const dealerHand = document.querySelector('.dealer-hand');
+    const img = document.querySelector('.dealer-card_back');
+    dealerHand.removeChild(img);
+
+    let flipped_card;
+    try {
+        const response = await fetch('/flip_card_dealer');
+        const data = await response.json();
+        flipped_card = data.card
+    } catch {
+        console.error('Error fetching flipped card value: ', error);
+    }
+
+    addCardDealer(flipped_card)
 }
 
 function showPopup(popupType, playerScore, dealerScore) {

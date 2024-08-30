@@ -49,6 +49,11 @@ def hit():
     new_card = game.hit()
     return jsonify({"new_card": new_card})
 
+@app.route('/hit_dealer', methods=['GET'])
+def hit_dealer():
+    new_card = game.hit_dealer()
+    return jsonify({"new_card": new_card})
+
 @app.route('/player_score', methods=['GET'])
 def player_score():
     player_score = game.get_player_score()
@@ -63,6 +68,11 @@ def dealer_score():
 def check_natural():
     natural = game.check_natural()
     return jsonify({'natural': natural})
+
+@app.route('/flip_card_dealer', methods=['GET'])
+def flip_card_dealer():
+    card = game.flip_dealer_card()
+    return jsonify({"card": card})
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8080, debug=True)

@@ -45,6 +45,14 @@ def first_deal():
     dealer.hand.add_card(deck.deal_one())
     return [get_card_file_list(player.hand.cards), get_card_file_list(dealer.hand.cards)]
 
+def flip_dealer_card():
+    return get_card_file(dealer.hand.cards[1])
+
+def hit_dealer():
+    new_card = deck.deal_one()
+    dealer.hand.add_card(new_card)
+    return get_card_file(new_card)
+
 def hit():
     new_card = deck.deal_one()
     player.hand.add_card(new_card)
