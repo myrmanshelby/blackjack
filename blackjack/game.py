@@ -11,6 +11,9 @@ def display_player_chips():
 def subtract_bet(value):
     player.chip_total-=value
 
+def add_bet(value):
+    player.chip_total+=value
+
 def get_card_file_list(cards):
     file_lst = []
     for rank, suit in cards:

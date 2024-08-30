@@ -29,6 +29,14 @@ def subtract_bet():
     value = data.get('value', 0)
     game.subtract_bet(value)
     new_total = game.display_player_chips()
+    return jsonify({"chip_total": new_total})
+
+@app.route('/add_bet', methods=['POST'])
+def add_bet():
+    data = request.json
+    value = data.get('value', 0)
+    game.add_bet(value)
+    new_total = game.display_player_chips()
     print(new_total)
     return jsonify({"chip_total": new_total})
 

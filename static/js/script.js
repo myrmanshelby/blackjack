@@ -33,6 +33,7 @@ startGame.addEventListener('click', () => {
     fetch('/chip_total')
         .then(response => response.json())
         .then(data => {
+            chips = data.chipTotal
             chipTotal.textContent=`Current Chip Total: ${data.chip_total}`
         })
     controls.appendChild(startRound);
@@ -86,6 +87,20 @@ function subtractBet(betVal) {
         body: JSON.stringify({value: betVal})
     }).then(response=>response.json())
     .then(data=> {
+        chipTotal.textContent=`Current Chip Total: ${data.chip_total}`
+    })
+}
+
+function addBet(betVal) {
+    fetch('/add_bet', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({value: betVal})
+    }).then(response=>response.json())
+    .then(data=> {
+        console.log(data.chip_total)
         chipTotal.textContent=`Current Chip Total: ${data.chip_total}`
     })
 }
@@ -204,8 +219,26 @@ stay.addEventListener('click', async () => {
     flipCardDealer();
     
     let dealerScore=await getDealerScore()
-
     await dealerPlay(dealerScore)
+
+    setTimeout(async () => {
+        scores = await getScores();
+        let popupType = ''
+        if (scores[1]>21){
+            popupType='dealer-bust'
+            addBet(bet*2)
+        } else if (scores[0]>scores[1]) {
+            popupType='player-win'
+            addBet(bet*2)
+        } else if (scores[1]>scores[0]) {
+            popupType='player-lose'
+        } else {
+            popupType='tie'
+            addBet(bet)
+        }
+
+        showPopup(popupType, scores[0], scores[1]);
+    }, 750)
 })
 
 async function dealerPlay(dealerScore) {
@@ -288,6 +321,22 @@ function showPopup(popupType, playerScore, dealerScore) {
     } else if(popupType==='both-natural') {
         header.textContent = "It's a Tie!"
         message.textContent = "You and the dealer both got a natural"
+        winnerMessage.textContent = "You get your bet back!"
+    } else if(popupType==='player-win') {
+        header.textContent = "You Win!"
+        message.textContent = "Your score is higher than the dealer's."
+        winnerMessage.textContent = "You win this round!"
+    } else if(popupType==='player-lose') {
+        header.textContent = "You Lose!"
+        message.textContent = "Your score is lower than the dealer's."
+        winnerMessage.textContent = "The dealer wins this round!"
+    } else if(popupType==='dealer-bust') {
+        header.textContent = "You Win!"
+        message.textContent = "The dealer's score went higher than 21. That's a bust!"
+        winnerMessage.textContent = "You win this round!"
+    } else if(popupType==='tie') {
+        header.textContent = "It's a Tie"
+        message.textContent = "You and the dealer have the same score."
         winnerMessage.textContent = "You get your bet back!"
     }
 }
