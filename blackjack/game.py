@@ -8,6 +8,10 @@ deck = Deck()
 def display_player_chips():
     return player.chip_total
 
+def reset_player_chips():
+    player.chip_total=2500
+    return player.chip_total
+
 def subtract_bet(value):
     player.chip_total-=value
 

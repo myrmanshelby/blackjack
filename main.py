@@ -23,6 +23,12 @@ def chip_total():
     print(total)
     return jsonify({"chip_total": total})
 
+@app.route('/reset_player_chips', methods=['GET'])
+def reset_player_chips():
+    total = game.reset_player_chips()
+    print(total)
+    return jsonify({"chip_total": total})
+
 @app.route('/subtract_bet', methods=['POST'])
 def subtract_bet():
     data = request.json

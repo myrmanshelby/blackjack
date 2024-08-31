@@ -1,7 +1,6 @@
 /*
 TO DO:
-- immediately go to dealer turn when player gets 21 when they hit
-- Play again button fxnality
+- if chip total goes to zero, give popup and ask if they want to play a new game
 */
 
 const ten = document.createElement("button");
@@ -39,7 +38,6 @@ startGame.addEventListener('click', () => {
     fetch('/chip_total')
         .then(response => response.json())
         .then(data => {
-            chips = data.chipTotal
             chipTotal.textContent=`Current Chip Total: ${data.chip_total}`
         })
     controls.appendChild(startRound);
@@ -233,10 +231,6 @@ stay.addEventListener('click', async () => {
 
 const playAgain = document.querySelector('.play-again')
 playAgain.addEventListener('click', async () => {
-    /*
-    Reset hand and deck on backend
-    Remove card images from player and dealer hands
-    */
     removePopup();
     bet = 0;
     betTracker.textContent = "Current Bet: "+String(bet);
@@ -252,7 +246,6 @@ playAgain.addEventListener('click', async () => {
     fetch('/chip_total')
         .then(response => response.json())
         .then(data => {
-            chips = data.chipTotal
             chipTotal.textContent=`Current Chip Total: ${data.chip_total}`
         })
     controls.insertBefore(startRound, chipTotal);
@@ -352,7 +345,10 @@ function removePopup(){
     popup.style.visibility = 'hidden';
 }
 
-function showPopup(popupType, playerScore, dealerScore) {
+const restart = document.createElement('button')
+restart.textContent = 'Restart Game'
+
+async function showPopup(popupType, playerScore, dealerScore) {
     const popupContainer = document.querySelector('.popup-container')
     const popup = document.querySelector('.popup')
     popupContainer.style.display = 'flex';
@@ -365,7 +361,13 @@ function showPopup(popupType, playerScore, dealerScore) {
     player.textContent=`Player Score: ${playerScore}`
     dealer.textContent=`Dealer Score: ${dealerScore}`
 
-    if (popupType==='bust') {
+    if (!(await checkValidBet(1))) {
+        header.textContent = "You Lose!"
+        message.textContent = "You lost this round, and you lost all your chips..."
+        winnerMessage.textContent = "Do you want to play again?"
+        popup.removeChild(playAgain)
+        popup.appendChild(restart)
+    } else if (popupType==='bust') {
         header.textContent = 'Bust!'
         message.textContent = "Your score went higher than 21. That's a bust!"
         winnerMessage.textContent = "The dealer wins this round."
@@ -398,4 +400,34 @@ function showPopup(popupType, playerScore, dealerScore) {
         message.textContent = "You and the dealer have the same score."
         winnerMessage.textContent = "You get your bet back!"
     }
+}
+
+restart.addEventListener('click', () => {
+    resetPopup()
+    removePopup();
+    bet = 0;
+    betTracker.textContent = "Current Bet: "+String(bet);
+    fetch('/reset')
+    removeChildren('dealer-hand')
+    removeChildren('player-hand')
+
+    buttons.appendChild(ten);
+    buttons.appendChild(fifty);
+    buttons.appendChild(hundred);
+    buttons.appendChild(fiveH);
+
+    fetch('/reset_player_chips')
+        .then(response => response.json())
+        .then(data => {
+            chipTotal.textContent=`Current Chip Total: ${data.chip_total}`
+        })
+    controls.insertBefore(startRound, chipTotal);
+    buttons.removeChild(hit)
+    buttons.removeChild(stay)
+})
+
+function resetPopup() {
+    const popup = document.querySelector('.popup')
+    popup.removeChild(restart)
+    popup.appendChild(playAgain)
 }
