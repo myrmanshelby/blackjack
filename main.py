@@ -5,6 +5,7 @@ from blackjack import cards
 app = Flask(__name__)
 
 @app.route("/")
+@app.route("/index")
 def index():
     d = cards.Deck()
     card_list = []
