@@ -1,3 +1,10 @@
+/*
+TO DO:
+- add bet to player score when player gets a natural or ties with a natural
+- immediately go to dealer turn when player gets 21 when they hit
+- Play again button fxnality
+*/
+
 const ten = document.createElement("button");
 ten.textContent = "10"
 const fifty = document.createElement("button");
@@ -156,10 +163,12 @@ startRound.addEventListener('click', async () => {
                 if(data.natural!='none'){
                     scores = await getScores()
                     if(data.natural==='player'){
+                        addBet(bet*2)
                         showPopup('player-natural', scores[0], scores[1])
                     } else if(data.natural==='dealer'){
                         showPopup('dealer-natural', scores[0], scores[1])
                     } else if(data.natural==='both'){
+                        addBet(bet)
                         showPopup('both-natural', scores[0], scores[1])
                     }
                 }
