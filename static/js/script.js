@@ -1,6 +1,5 @@
 /*
 TO DO:
-- add bet to player score when player gets a natural or ties with a natural
 - immediately go to dealer turn when player gets 21 when they hit
 - Play again button fxnality
 */
@@ -21,7 +20,7 @@ const controls = document.querySelector(".controls");
 
 const ctrlContainer = document.querySelector(".ctrl-container")
 const betTracker = document.createElement("div");
-betTracker.textContent = "Current bet: 0";
+betTracker.textContent = "Current Bet: 0";
 const chipTotal = document.createElement("div");
 betTracker.classList.add("bet-tracker")
 chipTotal.classList.add("bet-tracker")
@@ -216,6 +215,10 @@ hit.addEventListener('click', async () => {
 
     setTimeout(async () => {
         scores = await getScores()
+        if (scores[0]==21){
+            // TODO: TEST THIS!
+            await dealerTurn();
+        }
         if (scores[0]>21){
             flipCardDealer();
             await new Promise(resolve => setTimeout(resolve, 750));
@@ -225,6 +228,39 @@ hit.addEventListener('click', async () => {
 })
 
 stay.addEventListener('click', async () => {
+    await dealerTurn();
+})
+
+const playAgain = document.querySelector('.play-again')
+playAgain.addEventListener('click', async () => {
+    /*
+    Reset hand and deck on backend
+    Remove card images from player and dealer hands
+    */
+    removePopup();
+    bet = 0;
+    betTracker.textContent = "Current Bet: "+String(bet);
+    fetch('/reset')
+    removeChildren('dealer-hand')
+    removeChildren('player-hand')
+
+    buttons.appendChild(ten);
+    buttons.appendChild(fifty);
+    buttons.appendChild(hundred);
+    buttons.appendChild(fiveH);
+
+    fetch('/chip_total')
+        .then(response => response.json())
+        .then(data => {
+            chips = data.chipTotal
+            chipTotal.textContent=`Current Chip Total: ${data.chip_total}`
+        })
+    controls.insertBefore(startRound, chipTotal);
+    buttons.removeChild(hit)
+    buttons.removeChild(stay)
+})
+
+async function dealerTurn() {
     flipCardDealer();
     
     let dealerScore=await getDealerScore()
@@ -248,7 +284,7 @@ stay.addEventListener('click', async () => {
 
         showPopup(popupType, scores[0], scores[1]);
     }, 750)
-})
+}
 
 async function dealerPlay(dealerScore) {
     if(dealerScore<=16){
@@ -300,6 +336,20 @@ async function flipCardDealer() {
     }
 
     addCardDealer(flipped_card)
+}
+
+function removeChildren(className){
+    const hand = document.querySelector('.'+className);
+    while(hand.hasChildNodes()){
+        hand.firstChild.remove();
+    }
+}
+
+function removePopup(){
+    const popupContainer = document.querySelector('.popup-container')
+    const popup = document.querySelector('.popup')
+    popupContainer.style.display = 'none';
+    popup.style.visibility = 'hidden';
 }
 
 function showPopup(popupType, playerScore, dealerScore) {

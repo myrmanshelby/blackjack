@@ -40,6 +40,11 @@ def add_bet():
     print(new_total)
     return jsonify({"chip_total": new_total})
 
+@app.route('/reset')
+def reset():
+    game.reset()
+    return '', 204
+
 @app.route('/first_deal', methods=['GET'])
 def first_deal():
     cards = game.first_deal()

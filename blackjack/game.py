@@ -14,6 +14,11 @@ def subtract_bet(value):
 def add_bet(value):
     player.chip_total+=value
 
+def reset():
+    player.hand.reset_hand()
+    dealer.hand.reset_hand()
+    deck.build()
+
 def get_card_file_list(cards):
     file_lst = []
     for rank, suit in cards:
