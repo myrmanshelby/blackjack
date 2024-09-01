@@ -1,9 +1,16 @@
-from flask import Flask, render_template, jsonify, request, url_for
+from flask import Flask, render_template, jsonify, request, url_for, session
 from blackjack import game
 from blackjack import cards
 from waitress import serve
+import os
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
+
+@app.before_request
+def initialize_game():
+    if 'player' not in session or 'dealer' not in session or 'deck' not in session:
+        game.init_game()
 
 @app.route("/")
 @app.route("/index")

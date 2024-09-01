@@ -21,6 +21,17 @@ class Deck:
         if len(self.cards)>=1:
             return self.cards.pop()
         
+    def to_dict(self):
+        return {
+            'cards': self.cards
+        }
+        
+    @classmethod
+    def from_dict(cls, data):
+        deck = cls()
+        deck.cards = data['cards']
+        return deck
+        
 class Hand:
     def __init__(self):
         self.cards=[]
@@ -54,3 +65,16 @@ class Hand:
     def reset_hand(self):
         self.cards=[]
         self.score=0
+
+    def to_dict(self):
+        return {
+            'cards': self.cards,
+            'score': self.score
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        hand = cls()
+        hand.cards = data['cards']
+        hand.score = data['score']
+        return hand
