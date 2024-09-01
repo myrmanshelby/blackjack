@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request, url_for
 from blackjack import game
 from blackjack import cards
+from waitress import serve
 
 app = Flask(__name__)
 
@@ -95,4 +96,4 @@ def flip_card_dealer():
     return jsonify({"card": card})
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8080, debug=True)
+    serve(app, host="127.0.0.1", port=8080)
