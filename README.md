@@ -1,7 +1,9 @@
-# blackjack
-To run, use  ~ pip install -r requirements.txt
+# Blackjack
+To run the code, use  ~ pip install -r requirements.txt. Then use main.py
 
-**Note to self:** After building out web app, use instructions here to deploy: https://realpython.com/python-web-applications/#brush-up-on-the-basics
+# View in action
+To see the game run in action, visit: https://shelby-blackjack.onrender.com/
+NOTE: Due to free hosting, it may take a minute or two for the site to load. Happy e-gambling!
 
 ## Gameplay
 *Rules come from* https://bicyclecards.com/how-to-play/blackjack
