@@ -1,8 +1,3 @@
-/*
-TO DO:
-- if chip total goes to zero, give popup and ask if they want to play a new game
-*/
-
 const ten = document.createElement("button");
 ten.textContent = "10"
 const fifty = document.createElement("button");
@@ -126,8 +121,6 @@ async function checkValidBet(betVal) {
     }
 }
 
-// TO DO: fetch initial deal once player hits start round
-
 const hit = document.createElement("button");
 hit.textContent = "Hit"
 const stay = document.createElement("button");
@@ -214,7 +207,6 @@ hit.addEventListener('click', async () => {
     setTimeout(async () => {
         scores = await getScores()
         if (scores[0]==21){
-            // TODO: TEST THIS!
             await dealerTurn();
         }
         if (scores[0]>21){
